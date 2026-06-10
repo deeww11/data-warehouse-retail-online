@@ -1,5 +1,5 @@
 <?php
-$conn = mysqli_connect("localhost","root","","dw_retail");
+$conn = mysqli_connect("localhost","root","","retail");
 
 if(isset($_POST['simpan'])){
 
@@ -192,8 +192,8 @@ Simpan Data
 <?php
 
 $data = mysqli_query($conn,"
-SELECT * FROM produk
-ORDER BY id_produk DESC
+SELECT * FROM dim_produk
+ORDER BY id_produk ASC
 ");
 
 while($row = mysqli_fetch_assoc($data)){

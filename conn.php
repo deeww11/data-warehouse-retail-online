@@ -1,4 +1,5 @@
 <?php
+
 $conn = mysqli_connect(
     "localhost",
     "root",
@@ -7,6 +8,6 @@ $conn = mysqli_connect(
 );
 
 if(!$conn){
-    die("Koneksi gagal");
+    die("Koneksi Gagal : " . mysqli_connect_error());
 }
 ?>
