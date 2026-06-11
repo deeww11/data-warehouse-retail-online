@@ -62,5 +62,8 @@ if (isset($_POST['generate'])) {
         $current = strtotime("+1 day", $current);
     }
 
-    header("Location: ../Master Data/data_waktu.php");
+    header(
+        "Location: ../Master Data/data_waktu.php?success=generate"
+    );
+    exit;
 }
