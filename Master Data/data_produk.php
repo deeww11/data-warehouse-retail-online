@@ -259,6 +259,34 @@ table tr:hover{
 }
 
 /* =========================
+   PAGINATION
+========================= */
+
+.pagination{
+    margin-top:20px;
+    display:flex;
+    justify-content:center;
+    gap:8px;
+}
+
+.pagination a{
+    text-decoration:none;
+    padding:10px 15px;
+    background:#8B5E3C;
+    color:white;
+    border-radius:6px;
+    transition:0.3s;
+}
+
+.pagination a:hover{
+    background:#6F4E37;
+}
+
+.pagination .active-page{
+    background:#4A3428;
+}
+
+/* =========================
    RESPONSIVE
 ========================= */
 
@@ -405,12 +433,27 @@ table tr:hover{
             </tr>
 
             <?php
+            $batas = 25;
 
-            $data = mysqli_query($conn,"
-                SELECT *
-                FROM dim_produk
-                ORDER BY id_produk ASC
-            ");
+$halaman = isset($_GET['halaman']) ? (int)$_GET['halaman'] : 1;
+
+$halaman_awal = ($halaman > 1)
+    ? ($halaman * $batas) - $batas
+    : 0;
+
+$total_data = mysqli_num_rows(
+    mysqli_query($conn,"SELECT * FROM dim_produk")
+);
+
+$total_halaman = ceil($total_data / $batas);
+
+$data = mysqli_query($conn,"
+    SELECT *
+    FROM dim_produk
+    ORDER BY id_produk ASC
+    LIMIT $halaman_awal, $batas
+");
+
 
             while($row = mysqli_fetch_assoc($data)){
 
@@ -446,6 +489,36 @@ table tr:hover{
             <?php } ?>
 
         </table>
+
+        <div class="pagination">
+
+<?php if($halaman > 1){ ?>
+
+<a href="?halaman=<?= $halaman-1 ?>">
+    ← Previous
+</a>
+
+<?php } ?>
+
+<?php for($x=1; $x<=$total_halaman; $x++){ ?>
+
+<a
+href="?halaman=<?= $x ?>"
+class="<?= ($x==$halaman) ? 'active-page' : '' ?>">
+<?= $x ?>
+</a>
+
+<?php } ?>
+
+<?php if($halaman < $total_halaman){ ?>
+
+<a href="?halaman=<?= $halaman+1 ?>">
+    Next →
+</a>
+
+<?php } ?>
+
+</div>
 
     </div>
 
