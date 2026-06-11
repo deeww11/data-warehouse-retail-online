@@ -31,151 +31,258 @@ if(isset($_GET['edit'])){
 
 <style>
 
+/* =========================
+   RESET
+========================= */
+
 *{
     margin:0;
     padding:0;
     box-sizing:border-box;
-    font-family:'Segoe UI',sans-serif;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
+
+/* =========================
+   BODY
+========================= */
 
 body{
-    background:#0F172A;
-    color:#F8FAFC;
+    background:#F5F1E8;
+    color:#4A3428;
+    min-height:100vh;
 }
 
-/* NAVBAR */
+/* =========================
+   NAVBAR
+========================= */
 
 .navbar{
-    background:#1E293B;
+    background:#6F4E37;
     display:flex;
     justify-content:space-between;
     align-items:center;
     padding:15px 30px;
+    box-shadow:0 2px 10px rgba(0,0,0,0.15);
 }
 
 .logo{
     font-size:22px;
     font-weight:bold;
-    color:#3B82F6;
+    color:#FFF8E7;
 }
 
 .navbar ul{
     list-style:none;
     display:flex;
-    gap:15px;
+    gap:12px;
 }
 
 .navbar ul li a{
-    color:white;
     text-decoration:none;
+    color:#FFF8E7;
     padding:10px 15px;
     border-radius:8px;
-    transition:.3s;
+    transition:0.3s;
 }
 
-.navbar ul li a:hover,
+.navbar ul li a:hover{
+    background:#A67B5B;
+}
+
 .active{
-    background:#3B82F6;
+    background:#A67B5B;
+    color:white !important;
 }
 
-/* CONTAINER */
+/* =========================
+   CONTAINER
+========================= */
 
 .container{
     width:95%;
     margin:30px auto;
 }
 
-/* CARD */
+/* =========================
+   CARD
+========================= */
 
 .card{
-    background:#1E293B;
+    background:#FFF8E7;
     padding:25px;
     border-radius:15px;
     margin-bottom:25px;
-    box-shadow:0 0 10px rgba(0,0,0,.3);
+    box-shadow:0 4px 15px rgba(0,0,0,0.08);
 }
 
 .card h2,
 .card h3{
+    color:#6F4E37;
     margin-bottom:20px;
 }
 
-/* FORM */
+/* =========================
+   FORM
+========================= */
 
 label{
     display:block;
     margin-bottom:8px;
+    font-weight:600;
+    color:#5C4033;
 }
 
 input,
 select{
     width:100%;
     padding:12px;
-    border:none;
-    border-radius:8px;
-    background:#334155;
-    color:white;
     margin-bottom:15px;
+    border:1px solid #D2B48C;
+    border-radius:8px;
+    background:#FDF6EC;
+    color:#4A3428;
+    font-size:14px;
 }
 
+input:focus,
+select:focus{
+    outline:none;
+    border:2px solid #A67B5B;
+    background:white;
+}
+
+/* =========================
+   BUTTON
+========================= */
+
 button{
-    background:#3B82F6;
+    background: green;
     color:white;
     border:none;
     padding:12px 20px;
     border-radius:8px;
     cursor:pointer;
+    transition:0.3s;
+    font-weight:600;
 }
 
 button:hover{
-    background:#2563EB;
+    background:#6F4E37;
 }
 
 .btn-batal{
-    background:#EF4444;
+    display:inline-block;
+    background: red;
     color:white;
     text-decoration:none;
     padding:12px 20px;
     border-radius:8px;
+    margin-left:10px;
+    transition:0.3s;
 }
 
-/* TABLE */
+.btn-batal:hover{
+    background:#B85C38;
+}
+
+/* =========================
+   TABLE
+========================= */
 
 table{
     width:100%;
     border-collapse:collapse;
+    background:white;
+    border-radius:10px;
+    overflow:hidden;
 }
 
-th{
-    background:#3B82F6;
+table th{
+    background:#8B5E3C;
+    color:white;
+    padding:14px;
+    text-align:center;
+}
+
+table td{
     padding:12px;
+    border-bottom:1px solid #EADBC8;
+    text-align:center;
 }
 
-td{
-    padding:12px;
-    border-bottom:1px solid #334155;
+table tr:nth-child(even){
+    background:#FAF6EF;
 }
 
-tr:hover{
-    background:#334155;
+table tr:hover{
+    background:#F3E5D0;
 }
 
-/* BUTTON */
+/* =========================
+   ACTION BUTTON
+========================= */
 
 .btn-edit{
-    background:#22C55E;
+    background:green;
     color:white;
-    padding:8px 12px;
-    border-radius:5px;
     text-decoration:none;
+    padding:8px 5px;
+    border-radius:6px;
+    transition:0.3s;
+    margin-right:15px;
+}
+
+.btn-edit:hover{
+    background:#8B5E3C;
 }
 
 .btn-hapus{
-    background:#EF4444;
+    background: red;
     color:white;
-    padding:8px 12px;
-    border-radius:5px;
     text-decoration:none;
+    padding:8px 14px;
+    border-radius:6px;
+    transition:0.3s;
+}
+
+.btn-hapus:hover{
+    background:#B85C38;
+}
+
+/* =========================
+   PAGE TITLE
+========================= */
+
+.page-title{
+    color:#6F4E37;
+    margin-bottom:20px;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media(max-width:768px){
+
+    .navbar{
+        flex-direction:column;
+        gap:15px;
+    }
+
+    .navbar ul{
+        flex-wrap:wrap;
+        justify-content:center;
+    }
+
+    table{
+        display:block;
+        overflow-x:auto;
+    }
+
+    .container{
+        width:98%;
+    }
+
 }
 
 </style>
@@ -205,7 +312,7 @@ tr:hover{
 
     <div class="card">
 
-        <h2>CRUD Data Produk</h2>
+        <h2>Tambah Produk</h2>
 
         <form
         method="POST"
