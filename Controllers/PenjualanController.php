@@ -98,8 +98,10 @@ if (isset($_POST['update'])) {
             total_harga = '$total_harga'
          WHERE id_penjualan = '$id_penjualan'"
     );
-
-    header("Location: ../Transaksi/data_penjualan.php");
+    
+    header(
+        "Location: ../Transaksi/data_penjualan.php?success=update"
+    );
     exit;
 }
 
@@ -119,6 +121,8 @@ if (isset($_GET['hapus'])) {
          WHERE id_penjualan = '$id_penjualan'"
     );
 
-    header("Location: ../Transaksi/data_penjualan.php");
+    header(
+        "Location: ../Transaksi/data_penjualan.php?success=hapus"
+    );
     exit;
 }

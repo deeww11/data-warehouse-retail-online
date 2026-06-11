@@ -1,26 +1,71 @@
-
 <?php
 
 include_once "../Config/koneksi.php";
 
-$produk = mysqli_query(
+function rupiah($angka)
+{
+    return 'Rp ' . number_format(
+        $angka,
+        0,
+        ',',
+        '.'
+    );
+}
+
+/*
+|--------------------------------------------------------------------------
+| MASTER DATA
+|--------------------------------------------------------------------------
+*/
+
+$produk = [];
+$pelanggan = [];
+$waktu = [];
+
+$resultProduk = mysqli_query(
     $conn,
-    "SELECT * FROM dim_produk ORDER BY nama_produk ASC"
+    "SELECT *
+     FROM dim_produk
+     ORDER BY nama_produk ASC"
 );
 
-$pelanggan = mysqli_query(
+while ($row = mysqli_fetch_assoc($resultProduk)) {
+    $produk[] = $row;
+}
+
+$resultPelanggan = mysqli_query(
     $conn,
-    "SELECT * FROM dim_pelanggan ORDER BY nama_pelanggan ASC"
+    "SELECT *
+     FROM dim_pelanggan
+     ORDER BY nama_pelanggan ASC"
 );
 
-$waktu = mysqli_query(
+while ($row = mysqli_fetch_assoc($resultPelanggan)) {
+    $pelanggan[] = $row;
+}
+
+$resultWaktu = mysqli_query(
     $conn,
-    "SELECT * FROM dim_waktu ORDER BY tanggal ASC"
+    "SELECT *
+     FROM dim_waktu
+     ORDER BY tanggal ASC"
 );
+
+while ($row = mysqli_fetch_assoc($resultWaktu)) {
+    $waktu[] = $row;
+}
+
+/*
+|--------------------------------------------------------------------------
+| PAGINATION
+|--------------------------------------------------------------------------
+*/
 
 $limit = 25;
 
-$page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+$page = isset($_GET['page'])
+    ? (int) $_GET['page']
+    : 1;
 
 $start = ($page - 1) * $limit;
 
@@ -29,7 +74,7 @@ $no = $start + 1;
 $totalData = mysqli_fetch_assoc(
     mysqli_query(
         $conn,
-        "SELECT COUNT(*) as total
+        "SELECT COUNT(*) AS total
          FROM fact_penjualan"
     )
 );
@@ -38,10 +83,19 @@ $totalPage = ceil(
     $totalData['total'] / $limit
 );
 
+/*
+|--------------------------------------------------------------------------
+| DATA PENJUALAN
+|--------------------------------------------------------------------------
+*/
+
 $dataPenjualan = mysqli_query(
     $conn,
     "SELECT
         fp.id_penjualan,
+        fp.id_produk,
+        fp.id_pelanggan,
+        fp.id_waktu,
         dp.nama_produk,
         dpl.nama_pelanggan,
         dw.tanggal,
@@ -63,13 +117,17 @@ $dataPenjualan = mysqli_query(
 
 <!DOCTYPE html>
 <html>
+
 <head>
 
     <title>Data Penjualan</title>
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet">
 
 </head>
+
 <body>
 
 <div class="container mt-4">
@@ -84,16 +142,21 @@ $dataPenjualan = mysqli_query(
 
         <div class="mb-3">
 
-            <label>Produk</label>
+            <label class="form-label">
+                Produk
+            </label>
 
             <select
+                id="produk"
                 name="id_produk"
                 class="form-control"
                 required>
 
-                <option value="">Pilih Produk</option>
+                <option value="">
+                    Pilih Produk
+                </option>
 
-                <?php while($p = mysqli_fetch_assoc($produk)) : ?>
+                <?php foreach ($produk as $p) : ?>
 
                     <option
                         value="<?= $p['id_produk']; ?>"
@@ -103,7 +166,7 @@ $dataPenjualan = mysqli_query(
 
                     </option>
 
-                <?php endwhile; ?>
+                <?php endforeach; ?>
 
             </select>
 
@@ -111,24 +174,29 @@ $dataPenjualan = mysqli_query(
 
         <div class="mb-3">
 
-            <label>Pelanggan</label>
+            <label class="form-label">
+                Pelanggan
+            </label>
 
             <select
                 name="id_pelanggan"
                 class="form-control"
                 required>
 
-                <option value="">Pilih Pelanggan</option>
+                <option value="">
+                    Pilih Pelanggan
+                </option>
 
-                <?php while($pl = mysqli_fetch_assoc($pelanggan)) : ?>
+                <?php foreach ($pelanggan as $pl) : ?>
 
-                    <option value="<?= $pl['id_pelanggan']; ?>">
+                    <option
+                        value="<?= $pl['id_pelanggan']; ?>">
 
                         <?= $pl['nama_pelanggan']; ?>
 
                     </option>
 
-                <?php endwhile; ?>
+                <?php endforeach; ?>
 
             </select>
 
@@ -136,24 +204,29 @@ $dataPenjualan = mysqli_query(
 
         <div class="mb-3">
 
-            <label>Tanggal</label>
+            <label class="form-label">
+                Tanggal
+            </label>
 
             <select
                 name="id_waktu"
                 class="form-control"
                 required>
 
-                <option value="">Pilih Tanggal</option>
+                <option value="">
+                    Pilih Tanggal
+                </option>
 
-                <?php while($w = mysqli_fetch_assoc($waktu)) : ?>
+                <?php foreach ($waktu as $w) : ?>
 
-                    <option value="<?= $w['id_waktu']; ?>">
+                    <option
+                        value="<?= $w['id_waktu']; ?>">
 
                         <?= $w['tanggal']; ?>
 
                     </option>
 
-                <?php endwhile; ?>
+                <?php endforeach; ?>
 
             </select>
 
@@ -161,10 +234,13 @@ $dataPenjualan = mysqli_query(
 
         <div class="mb-3">
 
-            <label>Jumlah</label>
+            <label class="form-label">
+                Jumlah
+            </label>
 
             <input
                 type="number"
+                id="jumlah"
                 name="jumlah"
                 class="form-control"
                 min="1"
@@ -174,7 +250,9 @@ $dataPenjualan = mysqli_query(
 
         <div class="mb-3">
 
-            <label>Harga Satuan</label>
+            <label class="form-label">
+                Harga Satuan
+            </label>
 
             <input
                 type="text"
@@ -186,7 +264,9 @@ $dataPenjualan = mysqli_query(
 
         <div class="mb-3">
 
-            <label>Total Harga</label>
+            <label class="form-label">
+                Total Harga
+            </label>
 
             <input
                 type="text"
@@ -209,179 +289,455 @@ $dataPenjualan = mysqli_query(
 
     <hr>
 
-    <table class="table table-bordered">
+<table class="table table-bordered table-striped">
 
-        <thead>
+    <thead>
+
+        <tr>
+
+            <th>No</th>
+            <th>Produk</th>
+            <th>Pelanggan</th>
+            <th>Tanggal</th>
+            <th>Jumlah</th>
+            <th>Harga Satuan</th>
+            <th>Total Harga</th>
+            <th width="140">Aksi</th>
+
+        </tr>
+
+    </thead>
+
+    <tbody>
+
+        <?php while ($row = mysqli_fetch_assoc($dataPenjualan)) : ?>
 
             <tr>
 
-                <th>NO</th>
-                <th>Produk</th>
-                <th>Pelanggan</th>
-                <th>Tanggal</th>
-                <th>Jumlah</th>
-                <th>Harga Satuan</th>
-                <th>Total Harga</th>
-                <th>Aksi</th>
+                <td><?= $no++; ?></td>
 
-            </tr>
+                <td><?= $row['nama_produk']; ?></td>
 
-        </thead>
+                <td><?= $row['nama_pelanggan']; ?></td>
 
-        <tbody>
+                <td><?= $row['tanggal']; ?></td>
 
-            <?php while($row = mysqli_fetch_assoc($dataPenjualan)) : ?>
+                <td><?= $row['jumlah']; ?></td>
 
-                <tr>
+                <td><?= rupiah($row['harga_satuan']); ?></td>
 
-                    <td><?= $no++; ?></td>
+                <td><?= rupiah($row['total_harga']); ?></td>
 
-                    <td><?= $row['nama_produk']; ?></td>
+                <td>
 
-                    <td><?= $row['nama_pelanggan']; ?></td>
+                    <button
+                        type="button"
+                        class="btn btn-warning btn-sm btn-edit"
 
-                    <td><?= $row['tanggal']; ?></td>
+                        data-id="<?= $row['id_penjualan']; ?>"
+                        data-produk="<?= $row['id_produk']; ?>"
+                        data-pelanggan="<?= $row['id_pelanggan']; ?>"
+                        data-waktu="<?= $row['id_waktu']; ?>"
+                        data-jumlah="<?= $row['jumlah']; ?>"
 
-                    <td><?= $row['jumlah']; ?></td>
+                        data-bs-toggle="modal"
+                        data-bs-target="#modalEdit">
 
-                   <td>
-                        Rp <?= number_format($row['harga_satuan'], 0, ',', '.'); ?>
-                    </td>
+                        Edit
 
-                    <td>
-                        Rp <?= number_format($row['total_harga'], 0, ',', '.'); ?>
-                    </td>
-
-                    <td>
-
-                        <a
-                            href="?edit=<?= $row['id_penjualan']; ?>"
-                            class="btn btn-warning btn-sm">
-
-                            Edit
-
-                        </a>
-
-                       <a
-                            href="../controllers/PenjualanController.php?hapus=<?= $row['id_penjualan']; ?>"
-                            class="btn btn-danger btn-sm btn-hapus">
-
-                            Hapus
-
-                        </a>
-
-                    </td>
-
-                </tr>
-
-            <?php endwhile; ?>
-
-        </tbody>
-
-    </table>
-
-    <nav>
-
-        <ul class="pagination">
-
-            <?php for($i = 1; $i <= $totalPage; $i++) : ?>
-
-                <li class="page-item">
+                    </button>
 
                     <a
-                        class="page-link"
-                        href="?page=<?= $i ?>">
+                        href="../controllers/PenjualanController.php?hapus=<?= $row['id_penjualan']; ?>"
+                        class="btn btn-danger btn-sm btn-hapus">
 
-                        <?= $i ?>
+                        Hapus
 
                     </a>
 
-                </li>
+                </td>
 
-            <?php endfor; ?>
+            </tr>
 
-        </ul>
+        <?php endwhile; ?>
 
-    </nav>
+    </tbody>
+
+</table>
+
+<nav>
+
+    <ul class="pagination">
+
+        <?php for ($i = 1; $i <= $totalPage; $i++) : ?>
+
+            <li class="page-item <?= ($page == $i) ? 'active' : ''; ?>">
+
+                <a
+                    class="page-link"
+                    href="?page=<?= $i; ?>">
+
+                    <?= $i; ?>
+
+                </a>
+
+            </li>
+
+        <?php endfor; ?>
+
+    </ul>
+
+</nav>
 
 </div>
 
-<script>
 
-const produk = document.querySelector('select[name="id_produk"]');
-const jumlah = document.querySelector('input[name="jumlah"]');
+<!-- MODAL EDIT -->
 
-const hargaSatuan = document.getElementById('harga_satuan');
-const totalHarga = document.getElementById('total_harga');
+<div
+    class="modal fade"
+    id="modalEdit"
+    tabindex="-1">
 
-function hitungTotal() {
+    <div class="modal-dialog">
 
-    let selected =
-        produk.options[produk.selectedIndex];
+        <div class="modal-content">
 
-    let harga =
-        selected.getAttribute('data-harga') || 0;
+            <form
+                action="../controllers/PenjualanController.php"
+                method="POST">
 
-    let qty =
-        parseInt(jumlah.value) || 0;
+                <div class="modal-header">
 
-    hargaSatuan.value =
-        'Rp ' + Number(harga).toLocaleString('id-ID');
+                    <h5 class="modal-title">
 
-    totalHarga.value =
-        'Rp ' + (harga * qty).toLocaleString('id-ID');
-}
+                        Edit Data Penjualan
 
-produk.addEventListener(
-    'change',
-    hitungTotal
-);
+                    </h5>
 
-jumlah.addEventListener(
-    'input',
-    hitungTotal
-);
+                    <button
+                        type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal">
+                    </button>
 
-</script>
+                </div>
+
+                <div class="modal-body">
+
+                    <input
+                        type="hidden"
+                        name="id_penjualan"
+                        id="edit_id_penjualan">
+
+                    <div class="mb-3">
+
+                        <label class="form-label">
+
+                            Produk
+
+                        </label>
+
+                        <select
+                            name="id_produk"
+                            id="edit_produk"
+                            class="form-control"
+                            required>
+
+                            <?php foreach ($produk as $p) : ?>
+
+                                <option
+                                    value="<?= $p['id_produk']; ?>"
+                                    data-harga="<?= $p['harga']; ?>">
+
+                                    <?= $p['nama_produk']; ?>
+
+                                </option>
+
+                            <?php endforeach; ?>
+
+                        </select>
+
+                    </div>
+
+                    <div class="mb-3">
+
+                        <label class="form-label">
+
+                            Pelanggan
+
+                        </label>
+
+                        <select
+                            name="id_pelanggan"
+                            id="edit_pelanggan"
+                            class="form-control"
+                            required>
+
+                            <?php foreach ($pelanggan as $pl) : ?>
+
+                                <option
+                                    value="<?= $pl['id_pelanggan']; ?>">
+
+                                    <?= $pl['nama_pelanggan']; ?>
+
+                                </option>
+
+                            <?php endforeach; ?>
+
+                        </select>
+
+                    </div>
+
+                    <div class="mb-3">
+
+                        <label class="form-label">
+
+                            Tanggal
+
+                        </label>
+
+                        <select
+                            name="id_waktu"
+                            id="edit_waktu"
+                            class="form-control"
+                            required>
+
+                            <?php foreach ($waktu as $w) : ?>
+
+                                <option
+                                    value="<?= $w['id_waktu']; ?>">
+
+                                    <?= $w['tanggal']; ?>
+
+                                </option>
+
+                            <?php endforeach; ?>
+
+                        </select>
+
+                    </div>
+
+                    <div class="mb-3">
+
+                        <label class="form-label">
+
+                            Jumlah
+
+                        </label>
+
+                        <input
+                            type="number"
+                            name="jumlah"
+                            id="edit_jumlah"
+                            class="form-control"
+                            min="1"
+                            required>
+
+                    </div>
+
+                    <div class="mb-3">
+
+                        <label class="form-label">
+
+                            Harga Satuan
+
+                        </label>
+
+                        <input
+                            type="text"
+                            id="edit_harga"
+                            class="form-control"
+                            readonly>
+
+                    </div>
+
+                    <div class="mb-3">
+
+                        <label class="form-label">
+
+                            Total Harga
+
+                        </label>
+
+                        <input
+                            type="text"
+                            id="edit_total"
+                            class="form-control"
+                            readonly>
+
+                    </div>
+
+                </div>
+
+                <div class="modal-footer">
+
+                    <button
+                        type="submit"
+                        name="update"
+                        class="btn btn-success">
+
+                        Update
+
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-<?php if(isset($_GET['success'])) : ?>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>
 
-<?php if($_GET['success'] == 'simpan') : ?>
+/*
+|--------------------------------------------------------------------------
+| HITUNG TOTAL
+|--------------------------------------------------------------------------
+*/
 
-Swal.fire({
-    icon: 'success',
-    title: 'Berhasil',
-    text: 'Data penjualan berhasil disimpan'
+function hitungTotal(
+    produkId,
+    jumlahId,
+    hargaId,
+    totalId
+) {
+
+    const produk =
+        document.getElementById(produkId);
+
+    const jumlah =
+        document.getElementById(jumlahId);
+
+    if (!produk || !jumlah) {
+        return;
+    }
+
+    const harga =
+        produk.options[
+            produk.selectedIndex
+        ]?.dataset.harga || 0;
+
+    const qty =
+        parseInt(jumlah.value) || 0;
+
+    document.getElementById(hargaId).value =
+        'Rp ' + Number(harga)
+        .toLocaleString('id-ID');
+
+    document.getElementById(totalId).value =
+        'Rp ' + (harga * qty)
+        .toLocaleString('id-ID');
+}
+
+/*
+|--------------------------------------------------------------------------
+| FORM TAMBAH
+|--------------------------------------------------------------------------
+*/
+
+document.getElementById('produk')
+.addEventListener('change', function(){
+
+    hitungTotal(
+        'produk',
+        'jumlah',
+        'harga_satuan',
+        'total_harga'
+    );
+
 });
 
-<?php elseif($_GET['success'] == 'hapus') : ?>
+document.getElementById('jumlah')
+.addEventListener('input', function(){
 
-Swal.fire({
-    icon: 'success',
-    title: 'Berhasil',
-    text: 'Data penjualan berhasil dihapus'
+    hitungTotal(
+        'produk',
+        'jumlah',
+        'harga_satuan',
+        'total_harga'
+    );
+
 });
 
-<?php elseif($_GET['success'] == 'update') : ?>
+/*
+|--------------------------------------------------------------------------
+| FORM EDIT
+|--------------------------------------------------------------------------
+*/
 
-Swal.fire({
-    icon: 'success',
-    title: 'Berhasil',
-    text: 'Data penjualan berhasil diperbarui'
+document.querySelectorAll('.btn-edit')
+.forEach(function(btn){
+
+    btn.addEventListener('click', function(){
+
+        document.getElementById(
+            'edit_id_penjualan'
+        ).value = this.dataset.id;
+
+        document.getElementById(
+            'edit_produk'
+        ).value = this.dataset.produk;
+
+        document.getElementById(
+            'edit_pelanggan'
+        ).value = this.dataset.pelanggan;
+
+        document.getElementById(
+            'edit_waktu'
+        ).value = this.dataset.waktu;
+
+        document.getElementById(
+            'edit_jumlah'
+        ).value = this.dataset.jumlah;
+
+        hitungTotal(
+            'edit_produk',
+            'edit_jumlah',
+            'edit_harga',
+            'edit_total'
+        );
+
+    });
+
 });
 
-<?php endif; ?>
+document.getElementById('edit_produk')
+.addEventListener('change', function(){
 
-</script>
+    hitungTotal(
+        'edit_produk',
+        'edit_jumlah',
+        'edit_harga',
+        'edit_total'
+    );
 
-<?php endif; ?>
+});
 
+document.getElementById('edit_jumlah')
+.addEventListener('input', function(){
 
-<script>
+    hitungTotal(
+        'edit_produk',
+        'edit_jumlah',
+        'edit_harga',
+        'edit_total'
+    );
+
+});
+
+/*
+|--------------------------------------------------------------------------
+| HAPUS
+|--------------------------------------------------------------------------
+*/
 
 document.querySelectorAll('.btn-hapus')
 .forEach(function(button){
@@ -390,15 +746,19 @@ document.querySelectorAll('.btn-hapus')
 
         e.preventDefault();
 
-        let url = this.href;
+        const url = this.href;
 
         Swal.fire({
+
             title: 'Yakin?',
             text: 'Data penjualan akan dihapus',
             icon: 'warning',
+
             showCancelButton: true,
+
             confirmButtonText: 'Ya, Hapus',
             cancelButtonText: 'Batal'
+
         }).then((result) => {
 
             if(result.isConfirmed){
@@ -412,6 +772,45 @@ document.querySelectorAll('.btn-hapus')
 });
 
 </script>
+
+<?php
+
+$pesan = [
+
+    'simpan' =>
+        'Data penjualan berhasil disimpan',
+
+    'update' =>
+        'Data penjualan berhasil diperbarui',
+
+    'hapus' =>
+        'Data penjualan berhasil dihapus'
+
+];
+
+?>
+
+<?php if(
+    isset($_GET['success']) &&
+    isset($pesan[$_GET['success']])
+) : ?>
+
+<script>
+
+Swal.fire({
+
+    icon: 'success',
+
+    title: 'Berhasil',
+
+    text:
+        '<?= $pesan[$_GET['success']] ?>'
+
+});
+
+</script>
+
+<?php endif; ?>
 
 </body>
 </html>
