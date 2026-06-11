@@ -12,12 +12,6 @@ function rupiah($angka)
     );
 }
 
-/*
-|--------------------------------------------------------------------------
-| MASTER DATA
-|--------------------------------------------------------------------------
-*/
-
 $produk = [];
 $pelanggan = [];
 $waktu = [];
@@ -55,12 +49,6 @@ while ($row = mysqli_fetch_assoc($resultWaktu)) {
     $waktu[] = $row;
 }
 
-/*
-|--------------------------------------------------------------------------
-| PAGINATION
-|--------------------------------------------------------------------------
-*/
-
 $limit = 25;
 
 $page = isset($_GET['page'])
@@ -82,12 +70,6 @@ $totalData = mysqli_fetch_assoc(
 $totalPage = ceil(
     $totalData['total'] / $limit
 );
-
-/*
-|--------------------------------------------------------------------------
-| DATA PENJUALAN
-|--------------------------------------------------------------------------
-*/
 
 $dataPenjualan = mysqli_query(
     $conn,
@@ -391,9 +373,6 @@ $dataPenjualan = mysqli_query(
 
 </div>
 
-
-<!-- MODAL EDIT -->
-
 <div
     class="modal fade"
     id="modalEdit"
@@ -597,12 +576,6 @@ $dataPenjualan = mysqli_query(
 
 <script>
 
-/*
-|--------------------------------------------------------------------------
-| HITUNG TOTAL
-|--------------------------------------------------------------------------
-*/
-
 function hitungTotal(
     produkId,
     jumlahId,
@@ -637,12 +610,6 @@ function hitungTotal(
         .toLocaleString('id-ID');
 }
 
-/*
-|--------------------------------------------------------------------------
-| FORM TAMBAH
-|--------------------------------------------------------------------------
-*/
-
 document.getElementById('produk')
 .addEventListener('change', function(){
 
@@ -666,12 +633,6 @@ document.getElementById('jumlah')
     );
 
 });
-
-/*
-|--------------------------------------------------------------------------
-| FORM EDIT
-|--------------------------------------------------------------------------
-*/
 
 document.querySelectorAll('.btn-edit')
 .forEach(function(btn){
@@ -732,12 +693,6 @@ document.getElementById('edit_jumlah')
     );
 
 });
-
-/*
-|--------------------------------------------------------------------------
-| HAPUS
-|--------------------------------------------------------------------------
-*/
 
 document.querySelectorAll('.btn-hapus')
 .forEach(function(button){

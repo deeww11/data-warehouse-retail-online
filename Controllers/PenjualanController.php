@@ -2,12 +2,6 @@
 
 include_once "../Config/koneksi.php";
 
-/*
-|--------------------------------------------------------------------------
-| CREATE
-|--------------------------------------------------------------------------
-*/
-
 if (isset($_POST['simpan'])) {
 
     $id_produk = $_POST['id_produk'];
@@ -15,7 +9,6 @@ if (isset($_POST['simpan'])) {
     $id_waktu = $_POST['id_waktu'];
     $jumlah = $_POST['jumlah'];
 
-    // Ambil harga dari dim_produk
     $produk = mysqli_query(
         $conn,
         "SELECT harga
@@ -56,12 +49,6 @@ if (isset($_POST['simpan'])) {
     exit;
 }
 
-/*
-|--------------------------------------------------------------------------
-| UPDATE
-|--------------------------------------------------------------------------
-*/
-
 if (isset($_POST['update'])) {
 
     $id_penjualan = $_POST['id_penjualan'];
@@ -72,7 +59,6 @@ if (isset($_POST['update'])) {
 
     $jumlah = $_POST['jumlah'];
 
-    // Ambil harga terbaru dari produk
     $produk = mysqli_query(
         $conn,
         "SELECT harga
@@ -104,12 +90,6 @@ if (isset($_POST['update'])) {
     );
     exit;
 }
-
-/*
-|--------------------------------------------------------------------------
-| DELETE
-|--------------------------------------------------------------------------
-*/
 
 if (isset($_GET['hapus'])) {
 
