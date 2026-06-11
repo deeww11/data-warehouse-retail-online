@@ -24,6 +24,8 @@ $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 
 $start = ($page - 1) * $limit;
 
+$no = $start + 1;
+
 $totalData = mysqli_fetch_assoc(
     mysqli_query(
         $conn,
@@ -213,7 +215,7 @@ $dataPenjualan = mysqli_query(
 
             <tr>
 
-                <th>ID</th>
+                <th>NO</th>
                 <th>Produk</th>
                 <th>Pelanggan</th>
                 <th>Tanggal</th>
@@ -232,7 +234,7 @@ $dataPenjualan = mysqli_query(
 
                 <tr>
 
-                    <td><?= $row['id_penjualan']; ?></td>
+                    <td><?= $no++; ?></td>
 
                     <td><?= $row['nama_produk']; ?></td>
 
@@ -242,9 +244,13 @@ $dataPenjualan = mysqli_query(
 
                     <td><?= $row['jumlah']; ?></td>
 
-                    <td><?= number_format($row['harga_satuan']); ?></td>
+                   <td>
+                        Rp <?= number_format($row['harga_satuan'], 0, ',', '.'); ?>
+                    </td>
 
-                    <td><?= number_format($row['total_harga']); ?></td>
+                    <td>
+                        Rp <?= number_format($row['total_harga'], 0, ',', '.'); ?>
+                    </td>
 
                     <td>
 
@@ -256,10 +262,9 @@ $dataPenjualan = mysqli_query(
 
                         </a>
 
-                        <a
+                       <a
                             href="../controllers/PenjualanController.php?hapus=<?= $row['id_penjualan']; ?>"
-                            class="btn btn-danger btn-sm"
-                            onclick="return confirm('Yakin hapus data?')">
+                            class="btn btn-danger btn-sm btn-hapus">
 
                             Hapus
 
@@ -321,10 +326,10 @@ function hitungTotal() {
         parseInt(jumlah.value) || 0;
 
     hargaSatuan.value =
-        Number(harga).toLocaleString('id-ID');
+        'Rp ' + Number(harga).toLocaleString('id-ID');
 
     totalHarga.value =
-        (harga * qty).toLocaleString('id-ID');
+        'Rp ' + (harga * qty).toLocaleString('id-ID');
 }
 
 produk.addEventListener(
@@ -336,6 +341,75 @@ jumlah.addEventListener(
     'input',
     hitungTotal
 );
+
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<?php if(isset($_GET['success'])) : ?>
+
+<script>
+
+<?php if($_GET['success'] == 'simpan') : ?>
+
+Swal.fire({
+    icon: 'success',
+    title: 'Berhasil',
+    text: 'Data penjualan berhasil disimpan'
+});
+
+<?php elseif($_GET['success'] == 'hapus') : ?>
+
+Swal.fire({
+    icon: 'success',
+    title: 'Berhasil',
+    text: 'Data penjualan berhasil dihapus'
+});
+
+<?php elseif($_GET['success'] == 'update') : ?>
+
+Swal.fire({
+    icon: 'success',
+    title: 'Berhasil',
+    text: 'Data penjualan berhasil diperbarui'
+});
+
+<?php endif; ?>
+
+</script>
+
+<?php endif; ?>
+
+
+<script>
+
+document.querySelectorAll('.btn-hapus')
+.forEach(function(button){
+
+    button.addEventListener('click', function(e){
+
+        e.preventDefault();
+
+        let url = this.href;
+
+        Swal.fire({
+            title: 'Yakin?',
+            text: 'Data penjualan akan dihapus',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Ya, Hapus',
+            cancelButtonText: 'Batal'
+        }).then((result) => {
+
+            if(result.isConfirmed){
+                window.location.href = url;
+            }
+
+        });
+
+    });
+
+});
 
 </script>
 

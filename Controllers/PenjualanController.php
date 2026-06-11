@@ -50,8 +50,9 @@ if (isset($_POST['simpan'])) {
             '$total_harga'
         )"
     );
-
-    header("Location: ../Transaksi/data_penjualan.php");
+    header(
+        "Location: ../Transaksi/data_penjualan.php?success=simpan"
+    );
     exit;
 }
 
