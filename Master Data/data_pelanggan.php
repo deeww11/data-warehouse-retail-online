@@ -53,12 +53,313 @@ $dataPelanggan = mysqli_query(
         href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
         rel="stylesheet">
 
+    <style>
+
+    /* =========================
+    RESET
+    ========================= */
+
+    *{
+        margin:0;
+        padding:0;
+        box-sizing:border-box;
+        font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    /* =========================
+    BODY
+    ========================= */
+
+    body{
+        background:#F5F1E8;
+        color:#4A3428;
+        min-height:100vh;
+    }
+
+    /* =========================
+    NAVBAR
+    ========================= */
+
+    .navbar{
+        background:#6F4E37;
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        padding:15px 30px;
+        box-shadow:0 2px 10px rgba(0,0,0,0.15);
+    }
+
+    .logo{
+        font-size:22px;
+        font-weight:bold;
+        color:#FFF8E7;
+    }
+
+    .navbar ul{
+        list-style:none;
+        display:flex;
+        gap:12px;
+    }
+
+    .navbar ul li a{
+        text-decoration:none;
+        color:#FFF8E7;
+        padding:10px 15px;
+        border-radius:8px;
+        transition:0.3s;
+    }
+
+    .navbar ul li a:hover{
+        background:#A67B5B;
+    }
+
+    .active{
+        background:#A67B5B;
+        color:white !important;
+    }
+
+    /* =========================
+    CONTAINER
+    ========================= */
+
+    .container{
+        width:95%;
+        margin:30px auto;
+    }
+
+    /* =========================
+    CARD
+    ========================= */
+
+    .card{
+        background:#FFF8E7;
+        padding:25px;
+        border-radius:15px;
+        margin-bottom:25px;
+        box-shadow:0 4px 15px rgba(0,0,0,0.08);
+    }
+
+    .card h2,
+    .card h3{
+        color:#6F4E37;
+        margin-bottom:20px;
+    }
+
+    /* =========================
+    FORM
+    ========================= */
+
+    label{
+        display:block;
+        margin-bottom:8px;
+        font-weight:600;
+        color:#5C4033;
+    }
+
+    input,
+    select{
+        width:100%;
+        padding:12px;
+        margin-bottom:15px;
+        border:1px solid #D2B48C;
+        border-radius:8px;
+        background:#FDF6EC;
+        color:#4A3428;
+        font-size:14px;
+    }
+
+    input:focus,
+    select:focus{
+        outline:none;
+        border:2px solid #A67B5B;
+        background:white;
+    }
+
+    /* =========================
+    BUTTON
+    ========================= */
+
+    button{
+        background: green;
+        color:white;
+        border:none;
+        padding:12px 20px;
+        border-radius:8px;
+        cursor:pointer;
+        transition:0.3s;
+        font-weight:600;
+    }
+
+    button:hover{
+        background:#6F4E37;
+    }
+
+    .btn-batal{
+        display:inline-block;
+        background: red;
+        color:white;
+        text-decoration:none;
+        padding:12px 20px;
+        border-radius:8px;
+        margin-left:10px;
+        transition:0.3s;
+    }
+
+    .btn-batal:hover{
+        background:#B85C38;
+    }
+
+    /* =========================
+    TABLE
+    ========================= */
+
+    table{
+        width:100%;
+        border-collapse:collapse;
+        background:white;
+        border-radius:10px;
+        overflow:hidden;
+    }
+
+    table th{
+        background:#8B5E3C;
+        color:white;
+        padding:14px;
+        text-align:center;
+    }
+
+    table td{
+        padding:12px;
+        border-bottom:1px solid #EADBC8;
+        text-align:center;
+    }
+
+    table tr:nth-child(even){
+        background:#FAF6EF;
+    }
+
+    table tr:hover{
+        background:#F3E5D0;
+    }
+
+    /* =========================
+    ACTION BUTTON
+    ========================= */
+
+    .btn-edit{
+        background:green;
+        color:white;
+        text-decoration:none;
+        padding:8px 5px;
+        border-radius:6px;
+        transition:0.3s;
+        margin-right:15px;
+    }
+
+    .btn-edit:hover{
+        background:#8B5E3C;
+    }
+
+    .btn-hapus{
+        background: red;
+        color:white;
+        text-decoration:none;
+        padding:8px 14px;
+        border-radius:6px;
+        transition:0.3s;
+    }
+
+    .btn-hapus:hover{
+        background:#B85C38;
+    }
+
+    /* =========================
+    PAGE TITLE
+    ========================= */
+
+    .page-title{
+        color:#6F4E37;
+        margin-bottom:20px;
+    }
+
+    /* =========================
+    PAGINATION
+    ========================= */
+
+    .pagination{
+        margin-top:20px;
+        display:flex;
+        justify-content:center;
+        gap:8px;
+    }
+
+    .pagination a{
+        text-decoration:none;
+        padding:10px 15px;
+        background:#8B5E3C;
+        color:white;
+        border-radius:6px;
+        transition:0.3s;
+    }
+
+    .pagination a:hover{
+        background:#6F4E37;
+    }
+
+    .pagination .active-page{
+        background:#4A3428;
+    }
+
+    /* =========================
+    RESPONSIVE
+    ========================= */
+
+    @media(max-width:768px){
+
+        .navbar{
+            flex-direction:column;
+            gap:15px;
+        }
+
+        .navbar ul{
+            flex-wrap:wrap;
+            justify-content:center;
+        }
+
+        table{
+            display:block;
+            overflow-x:auto;
+        }
+
+        .container{
+            width:98%;
+        }
+
+    }
+
+    </style>
 </head>
 
 <body>
+<div class="navbar">
 
-<div class="container mt-4">
+    <div class="logo">
+        DATA WAREHOUSE RETAIL
+    </div>
 
+    <ul>
+        <li><a href="../dashboard.php">Dashboard</a></li>
+        <li><a href="data_produk.php">Produk</a></li>
+        <li><a href="data_waktu.php">Waktu</a></li>
+        <li><a href="data_pelanggan.php" class="active">Pelanggan</a></li>
+        <li><a href="../Transaksi/data_penjualan.php">Penjualan</a></li>
+    </ul>
+
+</div>
+
+<div class="container">
+
+    <div class="card">
     <h2>Data Pelanggan</h2>
 
     <hr>
@@ -145,11 +446,13 @@ $dataPelanggan = mysqli_query(
         </button>
 
     </form>
+    </div>
 
     <hr>
 
-
-    <table class="table table-bordered table-striped">
+    <div class="card">
+    <h3>Daftar Pelanggan</h3>
+    <table>
 
         <thead>
 
@@ -219,8 +522,6 @@ $dataPelanggan = mysqli_query(
         </tbody>
 
     </table>
-
-    <!-- Pagination -->
 
     <nav>
 
@@ -364,7 +665,7 @@ $dataPelanggan = mysqli_query(
         </div>
 
     </div>
-
+    </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
