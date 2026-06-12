@@ -109,172 +109,468 @@ $dataPenjualan = mysqli_query(
         href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
         rel="stylesheet">
 
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body{
+    background:#F5F1E8;
+    color:#4A3428;
+    min-height:100vh;
+}
+
+.navbar{
+    background:#6F4E37;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:15px 30px;
+    box-shadow:0 2px 10px rgba(0,0,0,0.15);
+}
+
+.logo{
+    font-size:22px;
+    font-weight:bold;
+    color:#FFF8E7;
+}
+
+.navbar ul{
+    list-style:none;
+    display:flex;
+    gap:12px;
+    margin:0;
+    padding:0;
+}
+
+.navbar ul li a{
+    text-decoration:none;
+    color:#FFF8E7;
+    padding:10px 15px;
+    border-radius:8px;
+    transition:0.3s;
+}
+
+.navbar ul li a:hover{
+    background:#A67B5B;
+}
+
+.active{
+    background:#A67B5B;
+    color:white !important;
+}
+
+.container{
+    width:95% !important;
+    max-width:none !important;
+    margin:30px auto;
+}
+
+.card{
+    background:#FFF8E7 !important;
+    padding:25px !important;
+    border-radius:15px !important;
+    margin-bottom:25px !important;
+    box-shadow:0 4px 15px rgba(0,0,0,0.08) !important;
+    border:none !important;
+}
+
+.card h2,
+.card h3{
+    color:#6F4E37;
+    margin-bottom:20px;
+}
+
+.card h2{
+    font-size:24px;
+    font-weight:700;
+}
+
+.card h3{
+    font-size:22px;
+    font-weight:700;
+}
+
+.form-label{
+    display:block;
+    margin-bottom:8px;
+    font-weight:600;
+    color:#5C4033;
+}
+
+.form-control{
+    width:100%;
+    padding:12px;
+    border:1px solid #D2B48C;
+    border-radius:8px;
+    background:#FDF6EC;
+    color:#4A3428;
+}
+
+.form-control:focus{
+    outline:none;
+    border:2px solid #A67B5B;
+    background:white;
+    box-shadow:none;
+}
+
+.btn-primary,
+.btn-success{
+    background:green !important;
+    border:none !important;
+    color:white;
+    padding:12px 20px;
+    border-radius:8px;
+    font-weight:600;
+}
+
+.btn-primary:hover,
+.btn-success:hover{
+    background:#6F4E37 !important;
+}
+
+.btn-edit{
+    background:green;
+    color:white !important;
+    text-decoration:none;
+    padding:8px 12px;
+    border-radius:6px;
+    border:none;
+    transition:0.3s;
+    margin-right:8px;
+}
+
+.btn-edit:hover{
+    background:#8B5E3C;
+}
+
+.btn-hapus{
+    background:red;
+    color:white !important;
+    text-decoration:none;
+    padding:8px 12px;
+    border-radius:6px;
+    transition:0.3s;
+}
+
+.btn-hapus:hover{
+    background:#B85C38;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    background:white;
+    border-radius:10px;
+    overflow:hidden;
+}
+
+table th{
+    background:#8B5E3C;
+    color:white;
+    padding:14px;
+    text-align:center;
+}
+
+table td{
+    padding:12px;
+    border-bottom:1px solid #EADBC8;
+    text-align:center;
+}
+
+table tr:nth-child(even){
+    background:#FAF6EF;
+}
+
+table tr:hover{
+    background:#F3E5D0;
+}
+
+.pagination{
+    margin-top:20px;
+    display:flex;
+    justify-content:center;
+    gap:8px;
+}
+
+.pagination a{
+    text-decoration:none;
+    padding:10px 15px;
+    background:#8B5E3C;
+    color:white;
+    border-radius:6px;
+    transition:0.3s;
+}
+
+.pagination a:hover{
+    background:#6F4E37;
+}
+
+.pagination .active-page{
+    background:#4A3428;
+}
+
+.modal-content{
+    background:#FFF8E7;
+    border:none;
+    border-radius:15px;
+}
+
+.modal-header{
+    background:#FFF8E7;
+    border-bottom:1px solid #EADBC8;
+}
+
+.modal-title{
+    color:#6F4E37;
+    font-weight:600;
+}
+
+.modal-footer{
+    background:#FFF8E7;
+    border-top:1px solid #EADBC8;
+}
+
+.btn-batal{
+    background:red !important;
+    color:white !important;
+    border:none !important;
+    padding:12px 20px;
+    border-radius:8px;
+    cursor:pointer;
+    transition:0.3s;
+    font-weight:600;
+}
+
+.btn-batal:hover{
+    background:#B85C38 !important;
+}
+
+.modal-footer{
+    display:flex;
+    justify-content:flex-end;
+    gap:10px;
+    background:#FFF8E7;
+    border-top:1px solid #EADBC8;
+}
+
+.modal-footer .btn-success{
+    margin:0;
+}
+
+@media(max-width:768px){
+
+    .navbar{
+        flex-direction:column;
+        gap:15px;
+    }
+
+    .navbar ul{
+        flex-wrap:wrap;
+        justify-content:center;
+    }
+
+    table{
+        display:block;
+        overflow-x:auto;
+    }
+
+    .container{
+        width:98%;
+    }
+}
+
+</style>
+
 </head>
 
 <body>
 
-<div class="container mt-4">
+<div class="navbar">
 
-    <h2>Data Penjualan</h2>
+    <div class="logo">
+        DATA WAREHOUSE RETAIL
+    </div>
 
-    <hr>
+    <ul>
+        <li><a href="../dashboard.php">Dashboard</a></li>
+        <li><a href="../Master Data/data_produk.php">Produk</a></li>
+        <li><a href="../Master Data/data_waktu.php">Waktu</a></li>
+        <li><a href="../Master Data/data_pelanggan.php">Pelanggan</a></li>
+        <li><a href="data_penjualan.php" class="active">Penjualan</a></li>
+    </ul>
 
-    <form
-        action="../controllers/PenjualanController.php"
-        method="POST">
+</div>
 
-        <div class="mb-3">
+<div class="container">
 
-            <label class="form-label">
-                Produk
-            </label>
+    <div class="card">
 
-            <select
-                id="produk"
-                name="id_produk"
-                class="form-control"
-                required>
+        <h2>Data Penjualan</h2>
 
-                <option value="">
-                    Pilih Produk
-                </option>
+        <form
+            action="../controllers/PenjualanController.php"
+            method="POST">
 
-                <?php foreach ($produk as $p) : ?>
+            <div class="mb-3">
 
-                    <option
-                        value="<?= $p['id_produk']; ?>"
-                        data-harga="<?= $p['harga']; ?>">
+                <label class="form-label">
+                    Produk
+                </label>
 
-                        <?= $p['nama_produk']; ?>
+                <select
+                    id="produk"
+                    name="id_produk"
+                    class="form-control"
+                    required>
 
+                    <option value="">
+                        Pilih Produk
                     </option>
 
-                <?php endforeach; ?>
+                    <?php foreach ($produk as $p) : ?>
 
-            </select>
+                        <option
+                            value="<?= $p['id_produk']; ?>"
+                            data-harga="<?= $p['harga']; ?>">
 
-        </div>
+                            <?= $p['nama_produk']; ?>
 
-        <div class="mb-3">
+                        </option>
 
-            <label class="form-label">
-                Pelanggan
-            </label>
+                    <?php endforeach; ?>
 
-            <select
-                name="id_pelanggan"
-                class="form-control"
-                required>
+                </select>
 
-                <option value="">
-                    Pilih Pelanggan
-                </option>
+            </div>
 
-                <?php foreach ($pelanggan as $pl) : ?>
+            <div class="mb-3">
 
-                    <option
-                        value="<?= $pl['id_pelanggan']; ?>">
+                <label class="form-label">
+                    Pelanggan
+                </label>
 
-                        <?= $pl['nama_pelanggan']; ?>
+                <select
+                    name="id_pelanggan"
+                    class="form-control"
+                    required>
 
+                    <option value="">
+                        Pilih Pelanggan
                     </option>
 
-                <?php endforeach; ?>
+                    <?php foreach ($pelanggan as $pl) : ?>
 
-            </select>
+                        <option
+                            value="<?= $pl['id_pelanggan']; ?>">
 
-        </div>
+                            <?= $pl['nama_pelanggan']; ?>
 
-        <div class="mb-3">
+                        </option>
 
-            <label class="form-label">
-                Tanggal
-            </label>
+                    <?php endforeach; ?>
 
-            <select
-                name="id_waktu"
-                class="form-control"
-                required>
+                </select>
 
-                <option value="">
-                    Pilih Tanggal
-                </option>
+            </div>
 
-                <?php foreach ($waktu as $w) : ?>
+            <div class="mb-3">
 
-                    <option
-                        value="<?= $w['id_waktu']; ?>">
+                <label class="form-label">
+                    Tanggal
+                </label>
 
-                        <?= $w['tanggal']; ?>
+                <select
+                    name="id_waktu"
+                    class="form-control"
+                    required>
 
+                    <option value="">
+                        Pilih Tanggal
                     </option>
 
-                <?php endforeach; ?>
+                    <?php foreach ($waktu as $w) : ?>
 
-            </select>
+                        <option
+                            value="<?= $w['id_waktu']; ?>">
 
-        </div>
+                            <?= $w['tanggal']; ?>
 
-        <div class="mb-3">
+                        </option>
 
-            <label class="form-label">
-                Jumlah
-            </label>
+                    <?php endforeach; ?>
 
-            <input
-                type="number"
-                id="jumlah"
-                name="jumlah"
-                class="form-control"
-                min="1"
-                required>
+                </select>
 
-        </div>
+            </div>
 
-        <div class="mb-3">
+            <div class="mb-3">
 
-            <label class="form-label">
-                Harga Satuan
-            </label>
+                <label class="form-label">
+                    Jumlah
+                </label>
 
-            <input
-                type="text"
-                id="harga_satuan"
-                class="form-control"
-                readonly>
+                <input
+                    type="number"
+                    id="jumlah"
+                    name="jumlah"
+                    class="form-control"
+                    min="1"
+                    required>
 
-        </div>
+            </div>
 
-        <div class="mb-3">
+            <div class="mb-3">
 
-            <label class="form-label">
-                Total Harga
-            </label>
+                <label class="form-label">
+                    Harga Satuan
+                </label>
 
-            <input
-                type="text"
-                id="total_harga"
-                class="form-control"
-                readonly>
+                <input
+                    type="text"
+                    id="harga_satuan"
+                    class="form-control"
+                    readonly>
 
-        </div>
+            </div>
 
-        <button
-            type="submit"
-            name="simpan"
-            class="btn btn-primary">
+            <div class="mb-3">
 
-            Simpan
+                <label class="form-label">
+                    Total Harga
+                </label>
 
-        </button>
+                <input
+                    type="text"
+                    id="total_harga"
+                    class="form-control"
+                    readonly>
 
-    </form>
+            </div>
 
-    <hr>
+            <button
+                type="submit"
+                name="simpan"
+                class="btn btn-primary">
 
-<table class="table table-bordered table-striped">
+                Simpan
 
-    <thead>
+            </button>
+
+        </form>
+
+    </div>
+
+
+<div class="card">
+
+    <h3>Daftar Data Penjualan</h3>
+
+    <table>
 
         <tr>
 
@@ -285,13 +581,9 @@ $dataPenjualan = mysqli_query(
             <th>Jumlah</th>
             <th>Harga Satuan</th>
             <th>Total Harga</th>
-            <th width="140">Aksi</th>
+            <th>Aksi</th>
 
         </tr>
-
-    </thead>
-
-    <tbody>
 
         <?php while ($row = mysqli_fetch_assoc($dataPenjualan)) : ?>
 
@@ -315,7 +607,7 @@ $dataPenjualan = mysqli_query(
 
                     <button
                         type="button"
-                        class="btn btn-warning btn-sm btn-edit"
+                        class="btn-edit"
 
                         data-id="<?= $row['id_penjualan']; ?>"
                         data-produk="<?= $row['id_produk']; ?>"
@@ -332,7 +624,7 @@ $dataPenjualan = mysqli_query(
 
                     <a
                         href="../controllers/PenjualanController.php?hapus=<?= $row['id_penjualan']; ?>"
-                        class="btn btn-danger btn-sm btn-hapus">
+                        class="btn-hapus">
 
                         Hapus
 
@@ -344,42 +636,48 @@ $dataPenjualan = mysqli_query(
 
         <?php endwhile; ?>
 
-    </tbody>
+    </table>
 
-</table>
+    <div class="pagination">
 
-<nav>
+        <?php if($page > 1){ ?>
 
-    <ul class="pagination">
+            <a href="?page=<?= $page-1 ?>">
+                ← Previous
+            </a>
 
-        <?php for ($i = 1; $i <= $totalPage; $i++) : ?>
+        <?php } ?>
 
-            <li class="page-item <?= ($page == $i) ? 'active' : ''; ?>">
+        <?php for($i=1; $i<=$totalPage; $i++){ ?>
 
-                <a
-                    class="page-link"
-                    href="?page=<?= $i; ?>">
+            <a
+                href="?page=<?= $i ?>"
+                class="<?= ($i==$page) ? 'active-page' : '' ?>">
 
-                    <?= $i; ?>
+                <?= $i ?>
 
-                </a>
+            </a>
 
-            </li>
+        <?php } ?>
 
-        <?php endfor; ?>
+        <?php if($page < $totalPage){ ?>
 
-    </ul>
+            <a href="?page=<?= $page+1 ?>">
+                Next →
+            </a>
 
-</nav>
+        <?php } ?>
+
+    </div>
 
 </div>
-
 <div
     class="modal fade"
     id="modalEdit"
-    tabindex="-1">
+    tabindex="-1"
+    aria-hidden="true">
 
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-lg">
 
         <div class="modal-content">
 
@@ -390,9 +688,7 @@ $dataPenjualan = mysqli_query(
                 <div class="modal-header">
 
                     <h5 class="modal-title">
-
                         Edit Data Penjualan
-
                     </h5>
 
                     <button
@@ -410,154 +706,137 @@ $dataPenjualan = mysqli_query(
                         name="id_penjualan"
                         id="edit_id_penjualan">
 
-                    <div class="mb-3">
+                    <label class="form-label">
+                        Produk
+                    </label>
 
-                        <label class="form-label">
+                    <select
+                        name="id_produk"
+                        id="edit_produk"
+                        class="form-control"
+                        required>
 
-                            Produk
+                        <?php foreach ($produk as $p) : ?>
 
-                        </label>
+                            <option
+                                value="<?= $p['id_produk']; ?>"
+                                data-harga="<?= $p['harga']; ?>">
 
-                        <select
-                            name="id_produk"
-                            id="edit_produk"
-                            class="form-control"
-                            required>
+                                <?= $p['nama_produk']; ?>
 
-                            <?php foreach ($produk as $p) : ?>
+                            </option>
 
-                                <option
-                                    value="<?= $p['id_produk']; ?>"
-                                    data-harga="<?= $p['harga']; ?>">
+                        <?php endforeach; ?>
 
-                                    <?= $p['nama_produk']; ?>
+                    </select>
 
-                                </option>
+                    <br>
 
-                            <?php endforeach; ?>
+                    <label class="form-label">
+                        Pelanggan
+                    </label>
 
-                        </select>
+                    <select
+                        name="id_pelanggan"
+                        id="edit_pelanggan"
+                        class="form-control"
+                        required>
 
-                    </div>
+                        <?php foreach ($pelanggan as $pl) : ?>
 
-                    <div class="mb-3">
+                            <option
+                                value="<?= $pl['id_pelanggan']; ?>">
 
-                        <label class="form-label">
+                                <?= $pl['nama_pelanggan']; ?>
 
-                            Pelanggan
+                            </option>
 
-                        </label>
+                        <?php endforeach; ?>
 
-                        <select
-                            name="id_pelanggan"
-                            id="edit_pelanggan"
-                            class="form-control"
-                            required>
+                    </select>
 
-                            <?php foreach ($pelanggan as $pl) : ?>
+                    <br>
 
-                                <option
-                                    value="<?= $pl['id_pelanggan']; ?>">
+                    <label class="form-label">
+                        Tanggal
+                    </label>
 
-                                    <?= $pl['nama_pelanggan']; ?>
+                    <select
+                        name="id_waktu"
+                        id="edit_waktu"
+                        class="form-control"
+                        required>
 
-                                </option>
+                        <?php foreach ($waktu as $w) : ?>
 
-                            <?php endforeach; ?>
+                            <option
+                                value="<?= $w['id_waktu']; ?>">
 
-                        </select>
+                                <?= $w['tanggal']; ?>
 
-                    </div>
+                            </option>
 
-                    <div class="mb-3">
+                        <?php endforeach; ?>
 
-                        <label class="form-label">
+                    </select>
 
-                            Tanggal
+                    <br>
 
-                        </label>
+                    <label class="form-label">
+                        Jumlah
+                    </label>
 
-                        <select
-                            name="id_waktu"
-                            id="edit_waktu"
-                            class="form-control"
-                            required>
+                    <input
+                        type="number"
+                        name="jumlah"
+                        id="edit_jumlah"
+                        class="form-control"
+                        min="1"
+                        required>
 
-                            <?php foreach ($waktu as $w) : ?>
+                    <br>
 
-                                <option
-                                    value="<?= $w['id_waktu']; ?>">
+                    <label class="form-label">
+                        Harga Satuan
+                    </label>
 
-                                    <?= $w['tanggal']; ?>
+                    <input
+                        type="text"
+                        id="edit_harga"
+                        class="form-control"
+                        readonly>
 
-                                </option>
+                    <br>
 
-                            <?php endforeach; ?>
+                    <label class="form-label">
+                        Total Harga
+                    </label>
 
-                        </select>
-
-                    </div>
-
-                    <div class="mb-3">
-
-                        <label class="form-label">
-
-                            Jumlah
-
-                        </label>
-
-                        <input
-                            type="number"
-                            name="jumlah"
-                            id="edit_jumlah"
-                            class="form-control"
-                            min="1"
-                            required>
-
-                    </div>
-
-                    <div class="mb-3">
-
-                        <label class="form-label">
-
-                            Harga Satuan
-
-                        </label>
-
-                        <input
-                            type="text"
-                            id="edit_harga"
-                            class="form-control"
-                            readonly>
-
-                    </div>
-
-                    <div class="mb-3">
-
-                        <label class="form-label">
-
-                            Total Harga
-
-                        </label>
-
-                        <input
-                            type="text"
-                            id="edit_total"
-                            class="form-control"
-                            readonly>
-
-                    </div>
+                    <input
+                        type="text"
+                        id="edit_total"
+                        class="form-control"
+                        readonly>
 
                 </div>
 
                 <div class="modal-footer">
 
                     <button
+                        type="button"
+                        class="btn-batal"
+                        data-bs-dismiss="modal">
+
+                        Batal
+
+                    </button>
+
+                    <button
                         type="submit"
                         name="update"
                         class="btn btn-success">
 
-                        Update
+                        Simpan
 
                     </button>
 
