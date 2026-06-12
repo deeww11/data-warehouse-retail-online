@@ -123,7 +123,8 @@ $dataPelanggan = mysqli_query(
     ========================= */
 
     .container{
-        width:95%;
+        width:95% !important;
+        max-width:none !important;
         margin:30px auto;
     }
 
@@ -132,11 +133,12 @@ $dataPelanggan = mysqli_query(
     ========================= */
 
     .card{
-        background:#FFF8E7;
-        padding:25px;
-        border-radius:15px;
-        margin-bottom:25px;
-        box-shadow:0 4px 15px rgba(0,0,0,0.08);
+        background:#FFF8E7 !important;
+        padding:25px !important;
+        border-radius:15px !important;
+        margin-bottom:25px !important;
+        box-shadow:0 4px 15px rgba(0,0,0,0.08) !important;
+        border:none !important;
     }
 
     .card h2,
@@ -145,53 +147,60 @@ $dataPelanggan = mysqli_query(
         margin-bottom:20px;
     }
 
+    .card h2{
+        font-size:24px;
+        font-weight:700;
+    }
+
+    .card h3{
+        font-size:22px;
+        font-weight:700;
+    }
+
     /* =========================
     FORM
     ========================= */
 
-    label{
+    .form-label{
         display:block;
         margin-bottom:8px;
         font-weight:600;
         color:#5C4033;
     }
 
-    input,
-    select{
+    .form-control{
         width:100%;
         padding:12px;
-        margin-bottom:15px;
         border:1px solid #D2B48C;
         border-radius:8px;
         background:#FDF6EC;
         color:#4A3428;
-        font-size:14px;
     }
 
-    input:focus,
-    select:focus{
+    .form-control:focus{
         outline:none;
         border:2px solid #A67B5B;
         background:white;
+        box-shadow:none;
     }
 
     /* =========================
     BUTTON
     ========================= */
 
-    button{
-        background: green;
+    .btn-primary,
+    .btn-success{
+        background:green !important;
+        border:none !important;
         color:white;
-        border:none;
         padding:12px 20px;
         border-radius:8px;
-        cursor:pointer;
-        transition:0.3s;
         font-weight:600;
     }
 
-    button:hover{
-        background:#6F4E37;
+    .btn-primary:hover,
+    .btn-success:hover{
+        background:#6F4E37 !important;
     }
 
     .btn-batal{
@@ -248,12 +257,13 @@ $dataPelanggan = mysqli_query(
 
     .btn-edit{
         background:green;
-        color:white;
+        color:white !important;
         text-decoration:none;
-        padding:8px 5px;
+        padding:8px 12px;
         border-radius:6px;
+        border:none;
         transition:0.3s;
-        margin-right:15px;
+        margin-right:8px;
     }
 
     .btn-edit:hover{
@@ -261,10 +271,10 @@ $dataPelanggan = mysqli_query(
     }
 
     .btn-hapus{
-        background: red;
-        color:white;
+        background:red;
+        color:white !important;
         text-decoration:none;
-        padding:8px 14px;
+        padding:8px 12px;
         border-radius:6px;
         transition:0.3s;
     }
@@ -313,6 +323,45 @@ $dataPelanggan = mysqli_query(
     /* =========================
     RESPONSIVE
     ========================= */
+
+    .modal-content{
+    background:#FFF8E7;
+    border:none;
+    border-radius:15px;
+    }
+
+    .modal-header{
+        background:#FFF8E7;
+        border-bottom:1px solid #EADBC8;
+    }
+
+    .modal-title{
+        color:#6F4E37;
+        font-weight:600;
+    }
+
+    .modal-footer{
+        display:flex;
+        justify-content:flex-end;
+        gap:10px;
+        background:#FFF8E7;
+        border-top:1px solid #EADBC8;
+    }
+
+    .btn-batal{
+        background:red !important;
+        color:white !important;
+        border:none !important;
+        padding:12px 20px;
+        border-radius:8px;
+        cursor:pointer;
+        transition:0.3s;
+        font-weight:600;
+    }
+
+    .btn-batal:hover{
+        background:#B85C38 !important;
+    }
 
     @media(max-width:768px){
 
@@ -523,29 +572,29 @@ $dataPelanggan = mysqli_query(
 
     </table>
 
-    <nav>
+    <div class="pagination">
 
-        <ul class="pagination">
+    <?php if($page > 1){ ?>
+        <a href="?page=<?= $page-1 ?>">
+            ← Previous
+        </a>
+    <?php } ?>
 
-            <?php for ($i = 1; $i <= $totalPage; $i++) : ?>
+    <?php for($i=1; $i<=$totalPage; $i++){ ?>
+        <a
+            href="?page=<?= $i ?>"
+            class="<?= ($i==$page) ? 'active-page' : '' ?>">
+            <?= $i ?>
+        </a>
+    <?php } ?>
 
-                <li class="page-item <?= ($page == $i) ? 'active' : ''; ?>">
+    <?php if($page < $totalPage){ ?>
+        <a href="?page=<?= $page+1 ?>">
+            Next →
+        </a>
+    <?php } ?>
 
-                    <a
-                        class="page-link"
-                        href="?page=<?= $i; ?>">
-
-                        <?= $i; ?>
-
-                    </a>
-
-                </li>
-
-            <?php endfor; ?>
-
-        </ul>
-
-    </nav>
+    </div>
 
 </div>
 
@@ -648,6 +697,15 @@ $dataPelanggan = mysqli_query(
                 </div>
 
                 <div class="modal-footer">
+
+                    <button
+                        type="button"
+                        class="btn-batal"
+                        data-bs-dismiss="modal">
+
+                        Batal
+
+                    </button>
 
                     <button
                         type="submit"
