@@ -55,10 +55,6 @@ $dataPelanggan = mysqli_query(
 
     <style>
 
-    /* =========================
-    RESET
-    ========================= */
-
     *{
         margin:0;
         padding:0;
@@ -66,19 +62,11 @@ $dataPelanggan = mysqli_query(
         font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
 
-    /* =========================
-    BODY
-    ========================= */
-
     body{
         background:#F5F1E8;
         color:#4A3428;
         min-height:100vh;
     }
-
-    /* =========================
-    NAVBAR
-    ========================= */
 
     .navbar{
         background:#6F4E37;
@@ -118,19 +106,11 @@ $dataPelanggan = mysqli_query(
         color:white !important;
     }
 
-    /* =========================
-    CONTAINER
-    ========================= */
-
     .container{
         width:95% !important;
         max-width:none !important;
         margin:30px auto;
     }
-
-    /* =========================
-    CARD
-    ========================= */
 
     .card{
         background:#FFF8E7 !important;
@@ -157,10 +137,6 @@ $dataPelanggan = mysqli_query(
         font-weight:700;
     }
 
-    /* =========================
-    FORM
-    ========================= */
-
     .form-label{
         display:block;
         margin-bottom:8px;
@@ -183,10 +159,6 @@ $dataPelanggan = mysqli_query(
         background:white;
         box-shadow:none;
     }
-
-    /* =========================
-    BUTTON
-    ========================= */
 
     .btn-primary,
     .btn-success{
@@ -218,10 +190,6 @@ $dataPelanggan = mysqli_query(
         background:#B85C38;
     }
 
-    /* =========================
-    TABLE
-    ========================= */
-
     table{
         width:100%;
         border-collapse:collapse;
@@ -251,10 +219,6 @@ $dataPelanggan = mysqli_query(
         background:#F3E5D0;
     }
 
-    /* =========================
-    ACTION BUTTON
-    ========================= */
-
     .btn-edit{
         background:green;
         color:white !important;
@@ -283,18 +247,10 @@ $dataPelanggan = mysqli_query(
         background:#B85C38;
     }
 
-    /* =========================
-    PAGE TITLE
-    ========================= */
-
     .page-title{
         color:#6F4E37;
         margin-bottom:20px;
     }
-
-    /* =========================
-    PAGINATION
-    ========================= */
 
     .pagination{
         margin-top:20px;
@@ -319,10 +275,6 @@ $dataPelanggan = mysqli_query(
     .pagination .active-page{
         background:#4A3428;
     }
-
-    /* =========================
-    RESPONSIVE
-    ========================= */
 
     .modal-content{
     background:#FFF8E7;
@@ -504,7 +456,6 @@ $dataPelanggan = mysqli_query(
     <table>
 
         <thead>
-
         <tr>
 
             <th>No</th>
@@ -517,7 +468,6 @@ $dataPelanggan = mysqli_query(
             </th>
 
         </tr>
-
         </thead>
 
         <tbody>
@@ -527,15 +477,10 @@ $dataPelanggan = mysqli_query(
             <tr>
 
                 <td><?= $no++; ?></td>
-
                 <td><?= $row['kode_pelanggan']; ?></td>
-
                 <td><?= $row['nama_pelanggan']; ?></td>
-
                 <td><?= $row['jenis_kelamin']; ?></td>
-
                 <td><?= $row['kota']; ?></td>
-
                 <td>
 
                     <button
@@ -557,13 +502,9 @@ $dataPelanggan = mysqli_query(
                     <a
                         href="../Controllers/PelangganController.php?hapus=<?= $row['id_pelanggan']; ?>"
                         class="btn btn-danger btn-sm btn-hapus">
-
                         Hapus
-
                     </a>
-
                 </td>
-
             </tr>
 
         <?php endwhile; ?>
