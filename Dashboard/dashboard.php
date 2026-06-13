@@ -1,14 +1,29 @@
 <?php
 include "../Config/koneksi.php";
 
+$kategori = '';
+
+if(isset($_GET['kategori'])){
+    $kategori = $_GET['kategori'];
+}
+
+$whereKategori = '';
+
+if($kategori != ''){
+    $whereKategori = "WHERE p.kategori = '$kategori'";
+}
+
 $q1 = mysqli_query($conn,"
-SELECT p.nama_produk,
-       SUM(f.jumlah) AS total_terjual,
-       SUM(f.total_harga) AS total_pendapatan
+SELECT
+    p.nama_produk,
+    SUM(f.jumlah) AS total_terjual,
+    SUM(f.total_harga) AS total_pendapatan
 FROM fact_penjualan f
 JOIN dim_produk p
 ON f.id_produk = p.id_produk
+$whereKategori
 GROUP BY p.nama_produk
+ORDER BY total_pendapatan DESC
 ");
 
 $produk = [];
@@ -27,8 +42,14 @@ SELECT
 FROM fact_penjualan f
 JOIN dim_waktu w
 ON f.id_waktu = w.id_waktu
-GROUP BY w.bulan, w.bulan_nama
-ORDER BY w.bulan
+JOIN dim_produk p
+ON f.id_produk = p.id_produk
+$whereKategori
+GROUP BY
+    w.bulan,
+    w.bulan_nama
+ORDER BY
+    w.bulan
 ");
 
 $bulan = [];
@@ -40,15 +61,18 @@ while($row = mysqli_fetch_assoc($q2)){
 }
 
 $q3 = mysqli_query($conn,"
-SELECT p.nama_pelanggan,
-       SUM(f.total_harga) AS total_belanja,
-       COUNT(f.id_penjualan) AS jumlah_transaksi
+SELECT
+    p.nama_pelanggan,
+    SUM(f.total_harga) AS total_belanja,
+    COUNT(f.id_penjualan) AS jumlah_transaksi
 FROM fact_penjualan f
 JOIN dim_pelanggan p
 ON f.id_pelanggan = p.id_pelanggan
+JOIN dim_produk pr
+ON f.id_produk = pr.id_produk
+".($kategori != '' ? "WHERE pr.kategori='$kategori'" : "")."
 GROUP BY p.nama_pelanggan
 ORDER BY total_belanja DESC
-LIMIT 10
 ");
 
 $pelanggan = [];
@@ -159,6 +183,72 @@ body{
     font-size:28px;
 }
 
+.filter-wrapper{
+    margin-bottom:25px;
+}
+
+.filter-card{
+    width:100%;
+    background:#FFF8E7;
+    padding:20px;
+    border-radius:15px;
+    box-shadow:0 4px 15px rgba(0,0,0,0.08);
+}
+
+.filter-card h3{
+    color:#6F4E37;
+    margin-bottom:15px;
+}
+
+.filter-form{
+    display:flex;
+    justify-content:flex-end;
+    align-items:center;
+    gap:12px;
+    flex-wrap:wrap;
+}
+.filter-form select{
+    width:250px;
+    padding:10px;
+    border:1px solid #D2B48C;
+    border-radius:8px;
+    background:#FDF6EC;
+}
+
+.filter-form button{
+    background:green;
+    color:white;
+    border:none;
+    padding:10px 18px;
+    border-radius:8px;
+    cursor:pointer;
+    font-weight:600;
+}
+
+.filter-form button:hover{
+    background:#6F4E37;
+}
+
+.btn-reset{
+    background:red;
+    color:white;
+    text-decoration:none;
+    padding:10px 18px;
+    border-radius:8px;
+    font-weight:600;
+}
+
+.btn-reset:hover{
+    background:#B85C38;
+}
+
+.kategori-aktif{
+    margin-top:15px;
+    color:#6F4E37;
+    font-size:14px;
+    font-weight:600;
+}
+
 table{
     width:100%;
     border-collapse:collapse;
@@ -231,6 +321,69 @@ DATA WAREHOUSE RETAIL
 
 </div>
 
+<div class="filter-wrapper">
+<div class="filter-card">
+
+    <form method="GET" class="filter-form">
+
+        <select name="kategori">
+
+            <option value="">Semua Kategori</option>
+
+            <option value="Makanan" <?= ($kategori=='Makanan') ? 'selected' : ''; ?>>
+                Makanan
+            </option>
+
+            <option value="Sembako" <?= ($kategori=='Sembako') ? 'selected' : ''; ?>>
+                Sembako
+            </option>
+
+            <option value="Minuman" <?= ($kategori=='Minuman') ? 'selected' : ''; ?>>
+                Minuman
+            </option>
+
+            <option value="Snack" <?= ($kategori=='Snack') ? 'selected' : ''; ?>>
+                Snack
+            </option>
+
+            <option value="Perawatan" <?= ($kategori=='Perawatan') ? 'selected' : ''; ?>>
+                Perawatan
+            </option>
+
+            <option value="Rumah Tangga" <?= ($kategori=='Rumah Tangga') ? 'selected' : ''; ?>>
+                Rumah Tangga
+            </option>
+
+            <option value="Elektronik" <?= ($kategori=='Elektronik') ? 'selected' : ''; ?>>
+                Elektronik
+            </option>
+
+            <option value="ATK" <?= ($kategori=='ATK') ? 'selected' : ''; ?>>
+                ATK
+            </option>
+
+        </select>
+
+        <button type="submit">
+            Tampilkan
+        </button>
+
+        <a href="dashboard.php" class="btn-reset">
+            Reset
+        </a>
+
+    </form>
+
+    <?php if($kategori != ''){ ?>
+        <div class="kategori-aktif">
+            Kategori Aktif : <b><?= $kategori; ?></b>
+        </div>
+    <?php } ?>
+
+</div>
+
+</div>
+
 <div class="card">
 <h3>Total Penjualan per Produk</h3>
 <canvas id="produkChart"></canvas>
@@ -247,6 +400,7 @@ DATA WAREHOUSE RETAIL
 </div>
 
 </div>
+
 
 <script>
 
